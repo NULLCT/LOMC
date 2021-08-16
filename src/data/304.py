@@ -1,0 +1,34 @@
+import sys
+
+sys.setrecursionlimit(500000)
+n, q = map(int, input().split())
+adj = [[] for _ in range(n)]
+for _ in range(n - 1):
+    a, b = map(int, input().split())
+    adj[a - 1].append(b - 1)
+    adj[b - 1].append(a - 1)
+c = [0] * q
+d = [0] * q
+for i in range(q):
+    c[i], d[i] = map(int, input().split())
+    c[i] -= 1
+    d[i] -= 1
+INF = 10**63
+depth = [INF] * n
+depth[0] = 0
+
+
+def dfs(v):
+    for w in adj[v]:
+        if depth[w] == INF:
+            depth[w] = depth[v] + 1
+            dfs(w)
+
+
+dfs(0)
+for i in range(q):
+    ans = depth[c[i]] - depth[d[i]]
+    if ans % 2 == 0:
+        print("Town")
+    else:
+        print("Road")
